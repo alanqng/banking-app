@@ -1,5 +1,10 @@
 "use client";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Image from "next/image";
 import Link from "next/link";
 import { sidebarLinks } from "@/constants";
@@ -35,31 +40,47 @@ const MobileNav = ({ user }: MobileNavProps) => {
               Horizon
             </h1>
           </Link>
-          {sidebarLinks.map((link) => {
-            const isActive =
-              pathName === link.route || pathName.startsWith(`${link.route}/`);
-            return (
-              <Link
-                key={link.label}
-                href={link.route}
-                className={cn("sidebar-link", { "bg-bank-gradient": isActive })}
-              >
-                <div className="relative size-6">
-                  <Image
-                    src={link.imgURL}
-                    fill
-                    // width={34}
-                    // height={34}
-                    className={cn({ "brightness-[3] invert-0": isActive })}
-                    alt={link.label}
-                  />
-                </div>
-                <p className={cn("sidebar-label", { "!text-white": isActive })}>
-                  {link.label}
-                </p>
-              </Link>
-            );
-          })}
+          <div className="mobilenav-sheet">
+            <SheetClose asChild>
+              <nav className="flex h-full flex-col gap-6 pt-16 text-white">
+                {sidebarLinks.map((link) => {
+                  const isActive =
+                    pathName === link.route ||
+                    pathName.startsWith(`${link.route}/`);
+                  return (
+                    <SheetClose asChild key={link.route}>
+                      <Link
+                        key={link.label}
+                        href={link.route}
+                        className={cn("mobilenav-sheet_close w-full", {
+                          "bg-bank-gradient": isActive,
+                        })}
+                      >
+                        <Image
+                          src={link.imgURL}
+                          width={20}
+                          height={20}
+                          className={cn({
+                            "brightness-[3] invert-0": isActive,
+                          })}
+                          alt={link.label}
+                        />
+                        <p
+                          className={cn("text-16 font-semibold text-black-2", {
+                            "text-white": isActive,
+                          })}
+                        >
+                          {link.label}
+                        </p>
+                      </Link>
+                    </SheetClose>
+                  );
+                })}
+                USER
+              </nav>
+            </SheetClose>
+            FOOTER
+          </div>
         </SheetContent>
       </Sheet>
     </section>
